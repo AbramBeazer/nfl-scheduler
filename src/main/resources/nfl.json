@@ -1,0 +1,186 @@
+{
+  "name": "National Football League",
+  "abbreviation": "NFL",
+  "conferences": [
+    {
+      "name": "National Football Conference",
+      "abbreviation": "NFC",
+      "divisions": [
+        {
+          "name": "NFC West",
+          "teams": [
+            {
+              "location": "San Francisco",
+              "name": "49ers"
+            },
+            {
+              "location": "Seattle",
+              "name": "Seahawks"
+            },
+            {
+              "location": "Los Angeles",
+              "name": "Rams"
+            },
+            {
+              "location": "Arizona",
+              "name": "Cardinals"
+            }
+          ]
+        },
+        {
+          "name": "NFC North",
+          "teams": [
+            {
+              "location": "Minnesota",
+              "name": "Vikings"
+            },
+            {
+              "location": "Detroit",
+              "name": "Lions"
+            },
+            {
+              "location": "Green Bay",
+              "name": "Packers"
+            },
+            {
+              "location": "Chicago",
+              "name": "Bears"
+            }
+          ]
+        },
+        {
+          "name": "NFC East",
+          "teams": [
+            {
+              "location": "Philadelphia",
+              "name": "Eagles"
+            },
+            {
+              "location": "Dallas",
+              "name": "Cowboys"
+            },
+            {
+              "location": "New York",
+              "name": "Giants"
+            },
+            {
+              "location": "Washington",
+              "name": "Commanders"
+            }
+          ]
+        },
+        {
+          "name": "NFC South",
+          "teams": [
+            {
+              "location": "Tampa Bay",
+              "name": "Buccaneers"
+            },
+            {
+              "location": "Carolina",
+              "name": "Panthers"
+            },
+            {
+              "location": "New Orleans",
+              "name": "Saints"
+            },
+            {
+              "location": "Atlanta",
+              "name": "Falcons"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "American Football Conference",
+      "abbreviation": "AFC",
+      "divisions": [
+        {
+          "name": "AFC West",
+          "teams": [
+            {
+              "location": "Kansas City",
+              "name": "Chiefs"
+            },
+            {
+              "location": "Los Angeles",
+              "name": "Chargers"
+            },
+            {
+              "location": "Las Vegas",
+              "name": "Raiders"
+            },
+            {
+              "location": "Denver",
+              "name": "Broncos"
+            }
+          ]
+        },
+        {
+          "name": "AFC North",
+          "teams": [
+            {
+              "location": "Cincinnati",
+              "name": "Bengals"
+            },
+            {
+              "location": "Baltimore",
+              "name": "Ravens"
+            },
+            {
+              "location": "Pittsburgh",
+              "name": "Steelers"
+            },
+            {
+              "location": "Cleveland",
+              "name": "Browns"
+            }
+          ]
+        },
+        {
+          "name": "AFC East",
+          "teams": [
+            {
+              "location": "Buffalo",
+              "name": "Bills"
+            },
+            {
+              "location": "Miami",
+              "name": "Dolphins"
+            },
+            {
+              "location": "New England",
+              "name": "Patriots"
+            },
+            {
+              "location": "New York",
+              "name": "Jets"
+            }
+          ]
+        },
+        {
+          "name": "AFC South",
+          "teams": [
+            {
+              "location": "Jacksonville",
+              "name": "Jaguars"
+            },
+            {
+              "location": "Tennessee",
+              "name": "Titans"
+            },
+            {
+              "location": "Indianapolis",
+              "name": "Colts"
+            },
+            {
+              "location": "Houston",
+              "name": "Texans"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
