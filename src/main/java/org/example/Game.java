@@ -7,17 +7,16 @@ public class Game {
     private LocalDate date;
     private Team away;
     private Team home;
-    private boolean bye = false;
-
-    public Game(Team away, Team home) {
-        this.away = away;
-        this.home = home;
-    }
+    private boolean bye;
 
     public Game(Team away, Team home, boolean bye) {
         this.away = away;
         this.home = home;
         this.bye = bye;
+    }
+
+    public Game(Team away, Team home) {
+        this(away, home, false);
     }
 
     public LocalDate getDate() {
@@ -54,6 +53,6 @@ public class Game {
 
     @Override
     public String toString() {
-        return "Date - " + away.getName() + " @ " + home.getName();
+        return date.toString() + " - " + away.getName() + " @ " + home.getName();
     }
 }

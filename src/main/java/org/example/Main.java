@@ -2,12 +2,22 @@ package org.example;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -21,10 +31,19 @@ import static org.example.DivisionEnum.*;
 public class Main {
 
     private static final int YEAR = 2023;
-
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String FILENAME = "nfl.json";
+
+    private static final LocalDate OPENING_THURSDAY = LocalDate.of(YEAR, Month.SEPTEMBER, 1)
+        .with(TemporalAdjusters.firstInMonth(
+            DayOfWeek.MONDAY))
+        .plusDays(3);
+
+    private static final LocalDate THANKSGIVING = LocalDate.of(YEAR, Month.NOVEMBER, 1)
+        .with(TemporalAdjusters.dayOfWeekInMonth(4, DayOfWeek.THURSDAY));
+
+    private static final LocalDate CHRISTMAS = LocalDate.of(YEAR, Month.DECEMBER, 25);
 
     public static void main(String[] args) {
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(FILENAME)) {
@@ -35,10 +54,73 @@ public class Main {
             games.addAll(getConferenceGames(league));
             games.addAll(getInterConferenceGames(league));
 
+            List<Team> teams = league.getConferences()
+                .stream()
+                .flatMap(c -> c.getDivisions().stream())
+                .flatMap(d -> d.getTeams()
+                    .stream())
+                .collect(Collectors.toList());
+
             System.out.println("Total games: " + games.size());
+
+            Schedule schedule = createSchedule(games, teams);
+            System.out.println(schedule);
         } catch (Exception e) {
             LOG.error(e.toString());
         }
+    }
+
+    private static Schedule createSchedule(List<Game> games, List<Team> teams) {
+        Schedule schedule = new Schedule();
+        Collections.shuffle(games);
+        LocalDate thursday = OPENING_THURSDAY;
+        Set<Team> hasHadBye = new HashSet<>();
+
+        for (int week = 1; week <= Schedule.WEEKS_IN_SEASON; week++) {
+            LocalDate sunday = thursday.plusDays(3);
+            LocalDate monday = sunday.plusDays(1);
+
+            List<Game> gamesThisWeek = new ArrayList<>();
+            Set<Team> usedTeams = new HashSet<>();
+
+            int j = 0;
+            while (usedTeams.size() < teams.size() && j < games.size()) {
+                Game game = games.get(j);
+                if (!usedTeams.contains(game.getAway()) && !usedTeams.contains(game.getHome())) {
+                    games.remove(j);
+                    game.setDate(sunday);
+                    gamesThisWeek.add(game);
+                    usedTeams.add(game.getAway());
+                    usedTeams.add(game.getHome());
+                } else {
+                    j++;
+                }
+            }
+
+            gamesThisWeek.get(0).setDate(thursday);
+            gamesThisWeek.get(gamesThisWeek.size() - 1).setDate(monday);
+
+            if (week >= 5) {
+                Deque<Team> byeTeams = new ArrayDeque<>();
+                teams.stream()
+                    .filter(t -> !usedTeams.contains(t))
+                    .filter(t -> !hasHadBye.contains(t))
+                    .forEach(byeTeams::push);
+                while (!byeTeams.isEmpty()) {
+                    Team away = byeTeams.pop();
+                    Team home = byeTeams.pop();
+                    gamesThisWeek.add(new Game(away, home, true));
+                    hasHadBye.add(away);
+                    hasHadBye.add(home);
+                }
+            }
+
+            schedule.getWeeks().add(new Week(gamesThisWeek));
+
+            thursday = thursday.plusDays(7);
+        }
+
+        return schedule;
     }
 
     private static List<Game> getDivisionGames(League league) {

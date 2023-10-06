@@ -7,6 +7,10 @@ public class Week {
 
     private List<Game> games;
 
+    public Week(List<Game> games) {
+        this.games = games;
+    }
+
     public List<Game> getGames() {
         if (games == null) {
             games = new ArrayList<>();
@@ -21,11 +25,9 @@ public class Week {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Game game : games) {
-            sb.append(game.toString());
-            sb.append("\n");
+        for (Game game : this.games) {
+            sb.append("\n * ").append(game.toString());
         }
-        sb.append("\n");
         return sb.toString();
     }
 }
